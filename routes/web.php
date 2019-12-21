@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/{controller}/{method}',function($controller, $method, Request $request){
+    return App::make('\App\Http\Controllers\\'.ucfirst($controller).'Controller')->callAction($method, array($request));
+});
