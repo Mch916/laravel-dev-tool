@@ -1,10 +1,16 @@
 <template>
-  <div class="bg-black w-1/2 h-5">
+  <div class="main-content">
+    <topbar />
   </div>
 </template>
 
 <script>
+import topbar from './topbar';
+
   export default {
+    components: {
+      topbar
+    },
     mounted() {
       console.log('Component mounted.')
     }
