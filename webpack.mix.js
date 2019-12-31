@@ -19,3 +19,27 @@ mix.sass('resources/assets/sass/app.scss', 'public/css')
    processCssUrls: false,
    postCss: [ tailwindcss('tailwind.config.js') ],
 })
+
+ mix.options({
+   hmrOptions: {
+       host: 'dev-tool.com',
+       port: '8000'
+   }
+})
+
+Mix.listen('configReady', (webpackConfig) => {
+   if (Mix.isUsing('hmr')) {
+     // Remove leading '/' from entry keys
+     webpackConfig.entry = Object.keys(webpackConfig.entry).reduce((entries, entry) => {
+       entries[entry.replace(/^\//, '')] = webpackConfig.entry[entry];
+       return entries;
+     }, {});
+ 
+     // Remove leading '/' from ExtractTextPlugin instances
+     webpackConfig.plugins.forEach((plugin) => {
+       if (plugin.constructor.name === 'ExtractTextPlugin') {
+         plugin.filename = plugin.filename.replace(/^\//, '');
+       }
+     });
+   }
+ });
